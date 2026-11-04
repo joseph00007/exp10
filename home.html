@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FoodExpress - User Registration</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #fff3e0;
+            color: #333;
+        }
+
+        header {
+            background-color: #3e2723;
+            color: #ffb300;
+            font-size: 25px;
+            font-weight: bold;
+            padding: 15px 8%;
+        }
+
+        .container {
+            max-width: 760px;
+            margin: 30px auto;
+            background-color: white;
+            border-radius: 15px;
+            padding: 30px 40px;
+            box-shadow: 0px 4px 10px rgba(0,0,0,0.15);
+        }
+
+        h1 {
+            color: #e65100;
+            margin-bottom: 25px;
+        }
+
+        .row {
+            display: flex;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .row label.name {
+            width: 170px;
+            color: #e65100;
+            font-weight: bold;
+        }
+
+        .star {
+            color: red;
+        }
+
+        input[type=text], input[type=password], input[type=number],
+        input[type=email], input[type=tel], select {
+            width: 280px;
+            padding: 8px;
+            border: 1px solid #aaa;
+            border-radius: 6px;
+            font-size: 15px;
+        }
+
+        input:invalid:focus, select:invalid:focus {
+            border: 2px solid #e53935;
+        }
+
+        .options label {
+            margin-right: 12px;
+        }
+
+        button {
+            background-color: #e65100;
+            color: white;
+            border: none;
+            padding: 10px 30px;
+            border-radius: 25px;
+            font-size: 15px;
+            cursor: pointer;
+            margin-left: 170px;
+        }
+
+        button:hover {
+            background-color: #3e2723;
+        }
+    </style>
+</head>
+
+<body>
+
+<header>🍔 FoodExpress - Online Food Delivery</header>
+
+<div class="container">
+
+    <h1>User Registration Form</h1>
+
+    <!-- form data is sent to the Node JS server at /server -->
+    <form action="/server" method="post" id="regForm">
+
+        <div class="row">
+            <label class="name">Name<span class="star">*</span></label>
+            <input type="text" name="name" required pattern="[A-Za-z ]+"
+                   title="Name should contain only letters">
+        </div>
+
+        <div class="row">
+            <label class="name">Password<span class="star">*</span></label>
+            <input type="password" name="password" required minlength="8"
+                   pattern="(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).{8,}"
+                   title="1 uppercase, 1 lowercase, 1 number and minimum 8 characters">
+        </div>
+
+        <div class="row">
+            <label class="name">Age<span class="star">*</span></label>
+            <input type="number" name="age" required min="18" max="60">
+        </div>
+
+        <div class="row">
+            <label class="name">Mobile Number<span class="star">*</span></label>
+            <input type="tel" name="mobile" required pattern="[0-9]{10}"
+                   title="Mobile number should be 10 digits">
+        </div>
+
+        <div class="row">
+            <label class="name">Email<span class="star">*</span></label>
+            <input type="email" name="email" required>
+        </div>
+
+        <div class="row">
+            <label class="name">Gender<span class="star">*</span></label>
+            <div class="options">
+                <label><input type="radio" name="gender" value="Male" required> Male</label>
+                <label><input type="radio" name="gender" value="Female"> Female</label>
+            </div>
+        </div>
+
+        <div class="row">
+            <label class="name">State<span class="star">*</span></label>
+            <select name="state" required>
+                <option value="">-- Select State --</option>
+                <option>Tamilnadu</option>
+                <option>Kerala</option>
+                <option>Karnataka</option>
+                <option>Andhra Pradesh</option>
+            </select>
+        </div>
+
+        <div class="row">
+            <label class="name">Favourite Cuisines<span class="star">*</span></label>
+            <div class="options" id="cuisines">
+                <label><input type="checkbox" name="cuisines" value="North Indian"> North Indian</label>
+                <label><input type="checkbox" name="cuisines" value="South Indian"> South Indian</label>
+                <label><input type="checkbox" name="cuisines" value="Chinese"> Chinese</label>
+                <label><input type="checkbox" name="cuisines" value="Italian"> Italian</label>
+            </div>
+        </div>
+
+        <button type="submit">Submit</button>
+
+    </form>
+
+</div>
+
+<script>
+    // at least one cuisine must be selected (checkboxes have no built-in group "required")
+    var boxes = document.querySelectorAll("input[name=cuisines]");
+
+    function checkCuisines() {
+        var anyChecked = Array.from(boxes).some(function (b) { return b.checked; });
+        boxes[0].setCustomValidity(anyChecked ? "" : "Please select at least one cuisine");
+    }
+
+    boxes.forEach(function (b) { b.addEventListener("change", checkCuisines); });
+    checkCuisines();
+</script>
+
+</body>
+</html>
